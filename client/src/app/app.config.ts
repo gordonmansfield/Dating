@@ -5,6 +5,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
 import { importProvidersFrom } from '@angular/core';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { provideToastr } from 'ngx-toastr';
 
 
 export const appConfig: ApplicationConfig = {
@@ -13,7 +14,10 @@ export const appConfig: ApplicationConfig = {
    provideRouter(routes),
    provideAnimations(),
    provideHttpClient(),
-   importProvidersFrom(BsDropdownModule.forRoot())
+   importProvidersFrom(BsDropdownModule.forRoot()),
+   provideToastr({
+    positionClass: 'toast-bottom-right'
+   })
   ]
 };
 
