@@ -1,0 +1,28 @@
+<div>
+    <div>
+        @if(!registerMode) {
+
+        <div class="text-center">
+        <h1>Welcome to the Dating App</h1>
+        <p class="lead">Find your perfect match!</p>
+        
+            <button (click)="toggleRegister()" class="btn btn-primary btn-lg me-2">Register</button>
+            <button class="btn btn-info btn-lg me-2">Learn more</button>
+        </div>
+        } @else {
+        <div class="container">
+            <div class="row justify-content-center mt-5">
+                <div class="col-4">
+                    <app-register 
+                    (cancelRegister)="cancelRegisterMode($event)"
+                    ></app-register>
+                </div>
+            </div>
+        </div>
+         }   
+    </div>
+</div>
+
+
+
+
