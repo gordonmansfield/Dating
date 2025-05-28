@@ -1,5 +1,5 @@
 using System;
-using API.Model;
+using Dating.API.Entities; // Importing the AppUser entity class
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data;
