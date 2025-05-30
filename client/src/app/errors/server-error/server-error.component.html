@@ -1,0 +1,23 @@
+<h4>Internal Server Error</h4>
+@if(error) {
+    <h5 class="text-danger">Error - {{ error.message }}</h5>
+    <p class="font-weight-bold">Note: If you are seeing this it is not Angular's fault.</p>
+    <p class="text-muted">This is a server-side error, possibly due to an unhandled exception in the API.</p>
+    <p>What to do in this case:</p>
+    <ul>
+      <li>Open Chrome dev tools and check the failing network request in the network tab</li>
+        <li>Check the console for any additional error messages</li>
+        <li>Reproduce the error in Postman</li>
+      <li>Contact the API provider for support.</li>
+      <li>Try again later.</li>
+    </ul>
+} 
+<p class="font-weight-bold">Following is the stack trace</p>    
+<code class="mt-5" style="background-color: whitesmoke;">
+{{ error.details }}
+</code>
+   <div>
+        <button class="btn btn-info btn-lg" routerLink="/">Go to Home</button>
+   </div>
+ 
+  <p>If you think this is an error, please contact support.</p> 
