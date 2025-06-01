@@ -30,28 +30,30 @@ public class AccountController(DataContext context, ITokenService tokenService) 
         {
             return BadRequest("Password must be at least 6 characters long");
         }
-    
+        return Ok();
         // Check if the user already exists
-        using var hmac = new HMACSHA512();
-
-        // Create a new user
-        var user = new AppUser
-        {
-            UserName = registerDto.Username.ToLower(),
-            PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-            PasswordSalt = hmac.Key
-        };
-
-        // Add the user to the database
-        context.Users.Add(user);
-        await context.SaveChangesAsync();
-
-        return Ok(new UserDto
-        {
-            Username = user.UserName,
-            Token = tokenService.CreateToken(user)
-        }); 
-        }
+/**
+            using var hmac = new HMACSHA512();
+    
+            // Create a new user
+            var user = new AppUser
+            {
+                UserName = registerDto.Username.ToLower(),
+                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
+                PasswordSalt = hmac.Key
+            };
+    
+            // Add the user to the database
+            context.Users.Add(user);
+            await context.SaveChangesAsync();
+    
+            return Ok(new UserDto
+            {
+                Username = user.UserName,
+                Token = tokenService.CreateToken(user)
+            });
+*/
+    }
     // Login method
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)

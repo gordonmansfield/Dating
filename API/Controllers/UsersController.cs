@@ -1,5 +1,9 @@
 
 using API.Data;
+using API.Dtos;
+using API.Interfaces;
+using AutoMapper;
+using AutoMapper.Execution;
 using Dating.API.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,26 +11,41 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
-    public class UsersController(DataContext context) : BaseAPIController
-    {
+[Authorize]
+public class UsersController(IUserRepository userRepository, IMapper mapper) : BaseAPIController
+{
 
-        [HttpGet]
-        public async Task <ActionResult <IEnumerable<AppUser>>>GetUsers()
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+    {
+        var users = await userRepository.GetMembersAsync();
+        if (users == null || !users.Any())
         {
-            var users = await context.Users.ToListAsync();
-            return users;
+            return NotFound("No users found.");
         }
-        
-        [Authorize]
-        [HttpGet ("{id:int}")]  // api/user/{id} 
-        public async Task<ActionResult <AppUser>>GetUser(int id)
+        return Ok(users);
+    }
+
+
+    [HttpGet("{username}")]  // api/user/{username} 
+    public async Task<ActionResult<MemberDto>> GetUser(string username)
+    {
+        var user = await userRepository.GetMemberAsync(username);
+        if (user == null)
         {
-            var user = await context.Users.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return user;
+            return NotFound();
         }
-        // Other actions can be added here
-    }   
+        return mapper.Map<MemberDto>(user);
+    }
+
+    [HttpGet("{id:int}")]  // api/user/{id}
+    public async Task<ActionResult<MemberDto>> GetUserById(int id)
+    {
+        var user = await userRepository.GetUserByIdAsync(id);
+        if (user == null)
+        {
+            return NotFound();
+        }
+        return mapper.Map<MemberDto>(user);
+    }
+}
