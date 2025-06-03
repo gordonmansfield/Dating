@@ -7,6 +7,7 @@ import { importProvidersFrom } from '@angular/core';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { provideToastr } from 'ngx-toastr';
 import { errorInterceptor } from './_interceptors/error.interceptor';
+import { jwtInterceptor } from './_interceptors/jwt.interceptor';
 
 
 export const appConfig: ApplicationConfig = {
@@ -14,7 +15,7 @@ export const appConfig: ApplicationConfig = {
   [provideZoneChangeDetection({ eventCoalescing: true }),
    provideRouter(routes),
    provideAnimations(),
-   provideHttpClient(withInterceptors([errorInterceptor])),
+   provideHttpClient(withInterceptors([errorInterceptor,jwtInterceptor])),
    importProvidersFrom(BsDropdownModule.forRoot()),
    provideToastr({
     positionClass: 'toast-bottom-right'
