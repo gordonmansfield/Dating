@@ -8,6 +8,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { provideToastr } from 'ngx-toastr';
 import { errorInterceptor } from './_interceptors/error.interceptor';
 import { jwtInterceptor } from './_interceptors/jwt.interceptor';
+import {NgxSpinnerModule} from 'ngx-spinner'
+import { loadingInterceptor } from './_interceptors/loading.interceptor';
 
 
 export const appConfig: ApplicationConfig = {
@@ -15,11 +17,12 @@ export const appConfig: ApplicationConfig = {
   [provideZoneChangeDetection({ eventCoalescing: true }),
    provideRouter(routes),
    provideAnimations(),
-   provideHttpClient(withInterceptors([errorInterceptor,jwtInterceptor])),
+   provideHttpClient(withInterceptors([errorInterceptor,jwtInterceptor,loadingInterceptor])),
    importProvidersFrom(BsDropdownModule.forRoot()),
    provideToastr({
     positionClass: 'toast-bottom-right'
-   })
+   }),
+   importProvidersFrom(NgxSpinnerModule)
   ]
 };
 

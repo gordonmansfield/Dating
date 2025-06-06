@@ -22,6 +22,8 @@ public class UserRepository(DataContext context, IMapper mapper) : IUserReposito
 
     public async Task<AppUser?> GetUserByUsernameAsync(string username)
     {
+        var id = Int32.Parse(username);
+        if(id >= 0){ return await context.Users.Include(x => x.Photos).FirstOrDefaultAsync(x => x.Id == id); }
         return await context.Users.Include(x => x.Photos).SingleOrDefaultAsync(x => x.UserName == username);
     }
 

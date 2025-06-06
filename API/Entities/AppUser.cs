@@ -1,5 +1,6 @@
 using API.Extensions;
 
+
 namespace Dating.API.Entities
 {
     public class AppUser
