@@ -17,7 +17,7 @@ export class MemberDetailComponent implements OnInit{
   private memberService = inject(MembersService);
   private route = inject(ActivatedRoute);
   member?: Member;
-  images: GalleryItem[] = [];
+  images: GalleryItem[]=[];
 
   ngOnInit() {
     this.loadMember();

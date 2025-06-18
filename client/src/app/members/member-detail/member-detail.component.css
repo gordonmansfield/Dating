@@ -1,8 +1,9 @@
 .img-thumbnail {
     margin: 25px;
-    width: 85%;
-    height: 85%;
+    width: 10%;
+    height: 10%;
 }
+
 .card-body {
     padding: 0 25px;
 }   
@@ -11,3 +12,6 @@
     background-color: #f8f9fa;
     border-top: none solid #dee2e6;
 }   
+.thumb { 
+    display: inline-block; margin-bottom: 20px; 
+}

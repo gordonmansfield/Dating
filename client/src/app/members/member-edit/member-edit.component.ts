@@ -7,11 +7,12 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
 import { TitleCasePipe } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
+import { PhotoEditorComponent } from "../photo-editor/photo-editor.component";
 
 @Component({
   selector: 'app-member-edit',
   standalone: true,
-  imports: [TabsModule, GalleryModule, TitleCasePipe, FormsModule],
+  imports: [TabsModule, GalleryModule, TitleCasePipe, FormsModule, PhotoEditorComponent],
   templateUrl: './member-edit.component.html',
   styleUrls: ['./member-edit.component.css']
 })
@@ -52,6 +53,9 @@ export class MemberEditComponent implements OnInit {
       }
     })
 
+  }
+  onMemberChange(event:Member) {
+    this.member = event;
   }
 
 }
