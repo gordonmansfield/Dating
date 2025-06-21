@@ -1,8 +1,10 @@
 
+using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Text;
 using API.Data;
 using API.DTOs;
+using AutoMapper;
 using Dating.API.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Controllers;
 
 
-public class AccountController(DataContext context, ITokenService tokenService) : BaseAPIController
+public class AccountController(DataContext context, ITokenService tokenService, IMapper mapper) : BaseAPIController
 {
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
@@ -30,29 +32,27 @@ public class AccountController(DataContext context, ITokenService tokenService) 
         {
             return BadRequest("Password must be at least 6 characters long");
         }
-        return Ok();
+
         // Check if the user already exists
-/**
+
             using var hmac = new HMACSHA512();
-    
-            // Create a new user
-            var user = new AppUser
-            {
-                UserName = registerDto.Username.ToLower(),
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key
-            };
-    
-            // Add the user to the database
-            context.Users.Add(user);
+        var user = mapper.Map<AppUser>(registerDto);
+        user.UserName = registerDto.Username.ToLower();
+//#pragma warning disable CS8604 // Possible null reference argument.
+        user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
+        //#pragma warning restore CS8604 // Possible null reference argument.
+        user.PasswordSalt = hmac.Key;
+        // Add the user to the database
+        context.Users.Add(user);
             await context.SaveChangesAsync();
     
             return Ok(new UserDto
             {
                 Username = user.UserName,
-                Token = tokenService.CreateToken(user)
+                Token = tokenService.CreateToken(user),
+                KnownAs = user.KnownAs
             });
-*/
+
     }
     // Login method
     [HttpPost("login")]
@@ -68,6 +68,7 @@ public class AccountController(DataContext context, ITokenService tokenService) 
         }
 
         // Validate the password
+        
         using var hmac = new HMACSHA512(user.PasswordSalt);
         var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
         for (int i = 0; i < computedHash.Length; i++)
@@ -81,6 +82,7 @@ public class AccountController(DataContext context, ITokenService tokenService) 
         return Ok(new UserDto
         {
             Username = user.UserName,
+            KnownAs = user.KnownAs,
             Token = tokenService.CreateToken(user),
             PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
         });

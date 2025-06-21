@@ -1,5 +1,6 @@
 namespace  API.Helpers;
 using API.Dtos;
+using API.DTOs;
 using API.Extensions;
 using AutoMapper;
 using Dating.API.Entities;
@@ -14,5 +15,7 @@ public class AutoMapperProfiles : Profile
 
         CreateMap<Photo, PhotoDto>();
         CreateMap<MemberUpdateDto, AppUser>();
+        CreateMap<RegisterDto, AppUser>();
+        CreateMap<string, DateOnly>().ConvertUsing(s => DateOnly.Parse(s));
     }
 }
