@@ -1,6 +1,7 @@
 
 using API.Dtos;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Dating.API.Entities;
@@ -15,13 +16,12 @@ public class UsersController(IUserRepository userRepository, IMapper mapper, IPh
 {
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+    public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
     {
-        var users = await userRepository.GetMembersAsync();
-        if (users == null || !users.Any())
-        {
-            return NotFound("No users found.");
-        }
+        userParams.CurrentUserName = User.GetUsername();
+        var users = await userRepository.GetMembersAsync(userParams);
+        Response.AddPaginationHeader(users);
+
         return Ok(users);
     }
 
