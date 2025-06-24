@@ -15,12 +15,13 @@
       </div>
     </div>
   
-    <div class="card-body p-1" style="text-align: center;">
-    <h6 class="card-title">{{member().knownAs}}G </h6>
-    <div>
-    <p class="card-text">Age: {{member().age}}</p>
-    <p class="card-text">City: {{member().city}}</p>
-    <p class="card-text">Country: {{member().country}}</p>
+    <div class="card-body p-1">
+      <h6 class="card-title text-center mb-1">
+        <i class="fa fa-user me-2 mg-2"></i>
+        {{member().knownAs}},
+        {{member().age}}
+      <p class="card-text">{{member().city}}</p>
+      </h6>
     </div>
-</div>
+
   

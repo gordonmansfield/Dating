@@ -1,7 +1,8 @@
+using API.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
-
+[ServiceFilter(typeof(LogUserActivity))]
 [ApiController]
 [Route("api/[controller]")]
 // This is a base controller for all API controllers    
