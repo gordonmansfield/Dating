@@ -18,7 +18,7 @@ public class UserRepository(DataContext context, IMapper mapper) : IUserReposito
 
     public async Task<AppUser?> GetUserByIdAsync(int id)
     {
-        return await context.Users.Include(x => x.Photos).FirstOrDefaultAsync(x => x.Id == id);
+        return await context.Users.FindAsync(id);
     }
 
     public async Task<AppUser?> GetUserByUsernameAsync(string username)
@@ -60,7 +60,13 @@ public class UserRepository(DataContext context, IMapper mapper) : IUserReposito
         };
         return await PagedList<MemberDto>.CreateAsync(query.ProjectTo<MemberDto>(mapper.ConfigurationProvider), userParams.PageNumber, userParams.PageSize);
     }
-
+public async Task<MemberDto?> GetMemberByIdAsync(int id)
+    {
+        return await context.Users
+            .Where(x => x.Id == id)
+            .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
+            .SingleOrDefaultAsync();
+    }
     public async Task<MemberDto?> GetMemberAsync(string username)
     {
         return await context.Users
